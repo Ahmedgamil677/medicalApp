@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="medicaldatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Clinic">
+    <Key>
+      <PropertyRef Name="clinicID" />
+    </Key>
+    <Property Name="clinicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clinicName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="clinicAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="clinicMobile" Type="int" />
+    <Property Name="doctor" Type="int" />
+  </EntityType>
+  <EntityType Name="Doctor">
+    <Key>
+      <PropertyRef Name="doctorId" />
+    </Key>
+    <Property Name="doctorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DoctorAddress" Type="varchar" MaxLength="50" />
+    <Property Name="DoctorMobile" Type="int" />
+    <Property Name="specialty" Type="nvarchar" MaxLength="50" />
+    <Property Name="DoctorName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Medicine">
+    <Key>
+      <PropertyRef Name="medicineId" />
+    </Key>
+    <Property Name="medicineId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="medicineName" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="available" Type="bit" />
+  </EntityType>
+  <EntityType Name="Patient">
+    <Key>
+      <PropertyRef Name="PatientId" />
+    </Key>
+    <Property Name="PatientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="patientName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="patientAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="patientMobile" Type="int" />
+    <Property Name="condition" Type="nvarchar" MaxLength="150" />
+    <Property Name="patientDateAdmitted" Type="datetime" />
+    <Property Name="doctor" Type="int" />
+  </EntityType>
+  <EntityType Name="Rx">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PatientId" Type="int" />
+    <Property Name="patientName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ClinicId" Type="int" />
+    <Property Name="ClinicName" Type="nvarchar" MaxLength="50" />
+    <Property Name="PatientMobile" Type="nchar" MaxLength="10" />
+    <Property Name="Date" Type="nvarchar" MaxLength="50" />
+    <Property Name="DoctorName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DoctorId" Type="int" />
+    <Property Name="medicineName" Type="nvarchar" MaxLength="50" />
+    <Property Name="dose" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Clinic_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Clinic" Type="Self.Clinic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="doctorId" />
+      </Principal>
+      <Dependent Role="Clinic">
+        <PropertyRef Name="doctor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Patient_Doctor2">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="doctorId" />
+      </Principal>
+      <Dependent Role="Patient">
+        <PropertyRef Name="doctor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="medicaldatabaseModelStoreContainer">
+    <EntitySet Name="Clinic" EntityType="Self.Clinic" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Medicine" EntityType="Self.Medicine" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rx" EntityType="Self.Rx" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Clinic_Doctor" Association="Self.FK_Clinic_Doctor">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="Clinic" EntitySet="Clinic" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Patient_Doctor2" Association="Self.FK_Patient_Doctor2">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="Patient" EntitySet="Patient" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

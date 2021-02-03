@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="medicaldatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Clinic">
+    <Key>
+      <PropertyRef Name="clinicID" />
+    </Key>
+    <Property Name="clinicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clinicName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="clinicAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="clinicMobile" Type="Int32" />
+    <Property Name="doctor" Type="Int32" />
+    <NavigationProperty Name="Doctor1" Relationship="Self.FK_Clinic_Doctor" FromRole="Clinic" ToRole="Doctor" />
+  </EntityType>
+  <EntityType Name="Doctor">
+    <Key>
+      <PropertyRef Name="doctorId" />
+    </Key>
+    <Property Name="doctorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="specialty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Clinics" Relationship="Self.FK_Clinic_Doctor" FromRole="Doctor" ToRole="Clinic" />
+    <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Doctor2" FromRole="Doctor" ToRole="Patient" />
+    <Property Name="DoctorAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DoctorMobile" Type="Int32" />
+    <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Medicine">
+    <Key>
+      <PropertyRef Name="medicineId" />
+    </Key>
+    <Property Name="medicineId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="medicineName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="available" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Patient">
+    <Key>
+      <PropertyRef Name="PatientId" />
+    </Key>
+    <Property Name="PatientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="patientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="patientAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="patientMobile" Type="Int32" />
+    <Property Name="condition" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="patientDateAdmitted" Type="DateTime" Precision="3" />
+    <Property Name="doctor" Type="Int32" />
+    <NavigationProperty Name="Doctor1" Relationship="Self.FK_Patient_Doctor2" FromRole="Patient" ToRole="Doctor" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Clinic_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Clinic" Type="Self.Clinic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="doctorId" />
+      </Principal>
+      <Dependent Role="Clinic">
+        <PropertyRef Name="doctor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Patient_Doctor2">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="doctorId" />
+      </Principal>
+      <Dependent Role="Patient">
+        <PropertyRef Name="doctor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="medicaldatabaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Clinics" EntityType="Self.Clinic" />
+    <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+    <EntitySet Name="Medicines" EntityType="Self.Medicine" />
+    <EntitySet Name="Patients" EntityType="Self.Patient" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_Clinic_Doctor" Association="Self.FK_Clinic_Doctor">
+      <End Role="Doctor" EntitySet="Doctors" />
+      <End Role="Clinic" EntitySet="Clinics" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Patient_Doctor2" Association="Self.FK_Patient_Doctor2">
+      <End Role="Doctor" EntitySet="Doctors" />
+      <End Role="Patient" EntitySet="Patients" />
+    </AssociationSet>
+    <EntitySet Name="Rxes" EntityType="medicaldatabaseModel.Rx" />
+  </EntityContainer>
+  <EntityType Name="Rx">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientId" Type="Int32" />
+    <Property Name="patientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ClinicId" Type="Int32" />
+    <Property Name="ClinicName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PatientMobile" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DoctorId" Type="Int32" />
+    <Property Name="medicineName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dose" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

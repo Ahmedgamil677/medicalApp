@@ -1,0 +1,98 @@
+﻿@model WebApplication1.Models.Rx
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="col-md-2 pull-left " style="bottom:40px;" >
+            <h2>
+
+                @Html.DisplayFor(model => model.DoctorName)
+            </h2>
+        </div>
+        <div class="col-md-2  pull-right" style="bottom:30px;">
+            <h3>
+                @ViewBag.specialty
+            </h3>
+        </div>
+    </div>
+</div>
+
+<div>
+    <h4>Rx</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+
+        <dt>
+            @Html.DisplayNameFor(model => model.patientName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.patientName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dose)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dose)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClinicName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClinicName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientMobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientMobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.medicineName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.medicineName)
+        </dd>
+
+    </dl>
+</div>
+
+<footer class="bg-info" style="background-color:navajowhite;">
+    <div class="container">
+        <div class="col-md-3 pull-left">
+            @ViewBag.clinicAddress
+
+        </div>
+        <div class=" col-md-1 pull-right">
+
+            @ViewBag.clinicMobile
+
+        </div>
+    </div>
+
+</footer>
+<p style="margin-top:50px;">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+     <input class="alert-success pull-right" type="button" value="Print" onclick="window.print();">
+</p>

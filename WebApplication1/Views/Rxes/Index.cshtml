@@ -1,0 +1,72 @@
+﻿@model IEnumerable<WebApplication1.Models.Rx>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Medical App</h2>
+
+
+<table class="table">
+    @using (Html.BeginForm("Index", "Rxes", FormMethod.Get))
+    {<tr>
+        <th>
+            @Html.ActionLink("DoctorName", "index", new { sort = ViewBag.DoctorName, SelectedDoctorName=ViewBag.SelectedDoctorName})
+            click to sort
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ClinicName)
+        </th>
+
+        <th>
+        @Html.DisplayNameFor(model => model.Date)
+        </th>
+
+        <th>
+            @Html.ActionLink("PatientName", "index", new { sort = ViewBag.PatientName })
+        </th>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.PatientMobile)
+        </th>
+      </tr> 
+      <tr>
+        <th class="bg-success">
+            @Html.DropDownList("selectedDoctorName", new SelectList(ViewBag.uniqueDoctorNames, "Value", "Text", "viewBag.SelectedDoctorName"), "All", new { onchange = "form.submit();" })
+
+       
+        </th>
+    </tr>
+    }
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.DoctorName)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.patientName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Date)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.ClinicName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.PatientMobile)
+    </td>
+    
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("ShowRx", "ShowRx", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
+}
+
+</table>
